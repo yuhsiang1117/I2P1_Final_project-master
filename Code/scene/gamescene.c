@@ -83,6 +83,7 @@ void game_scene_update(Scene *self)
     // printf("%d\n", pl1->hp);
     // printf("%d\n", pl2->hp);
     srand((unsigned)time(&t));
+    printf("STATE:%d", state);
     switch (state){
         case Reset_L:
             if(bullet_num==0){
