@@ -3,6 +3,7 @@
 #include "element.h"
 #include "../scene/gamescene.h" // for element label
 #include "../shapes/Shape.h"
+#include "../scene/sceneManager.h"
 /*
    [player1 object]
 */

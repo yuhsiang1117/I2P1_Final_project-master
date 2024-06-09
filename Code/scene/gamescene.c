@@ -83,9 +83,10 @@ void game_scene_update(Scene *self)
     // printf("%d\n", pl1->hp);
     // printf("%d\n", pl2->hp);
     srand((unsigned)time(&t));
-    printf("STATE:%d", state);
+    printf("STATE:%d\n", state);
     switch (state){
         case Reset_L:
+        
             if(bullet_num==0){
                 bullet_num = (rand() % 7) + 2;
                 true_bullet = (rand() % bullet_num) + 1;
@@ -93,6 +94,7 @@ void game_scene_update(Scene *self)
                 for(i=0; i<true_bullet; i++){
                     bullet_arr[i] = 1;
                 }
+                // hide the bullets
                 printf("bn:%d  tb:%d  bb:%d\n", bullet_num, true_bullet, blank_bullet);
                 for(i=0; i < 10; i++){
                     j = (rand() % bullet_num);
@@ -110,14 +112,13 @@ void game_scene_update(Scene *self)
                 }printf("\n");
             } 
             break;
-        printf("state: %d");
         case P1_turn_L:
             if(pl1->state == Shoot_P1){
                 pl1->hp = pl1->hp - 1;
                 pl1->state = nothing;
                 state = P2_turn_L;
             }else if(pl1->state == Shoot_P2){
-                pl1->hp = pl1->hp - 1;
+                pl2->hp = pl2->hp - 1;
                 pl1->state = nothing;
                 state = P2_turn_L;
             }else if(pl1->state == Blank_p1){
@@ -137,18 +138,18 @@ void game_scene_update(Scene *self)
         case P2_turn_L:
             if(pl2->state == P2_Shoot_P2){
                 pl2->state = P2_nothing;
-                pl2->hp = pl1->hp - 1;
-                state = P2_turn_L;
-            }else if(pl2->state == P2_Shoot_P2){
+                pl2->hp = pl2->hp - 1;
+                state = P1_turn_L;
+            }else if(pl2->state == P2_Shoot_P1){
                 pl2->state = P2_nothing;
                 pl1->hp = pl1->hp - 1;
-                state = P2_turn_L;
-            }else if(pl1->state == P2_Blank_p1){
-                pl2->state = P2_nothing;
                 state = P1_turn_L;
             }else if(pl1->state == P2_Blank_p2){
                 pl2->state = P2_nothing;
                 state = P2_turn_L;
+            }else if(pl1->state == P2_Blank_p1){
+                pl2->state = P2_nothing;
+                state = P1_turn_L;
             }else if(bullet_num <= 0){
                 pl2->state = P2_nothing;
                 state = Reset_L;
