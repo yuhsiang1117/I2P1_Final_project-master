@@ -30,11 +30,11 @@ Elements *New_player1(int label)
 }
 void player1_update(Elements *self) {
     player1 *p1 = ((player1 *)(self->pDerivedObj));
-    printf("%d\n", state);
+    // printf("%d\n", state);
     if(state == P1_turn_L){
-        if(key_state[ALLEGRO_KEY_SPACE]){
+        if(key_state[ALLEGRO_KEY_1]){
             //shoot my self
-            printf("key1_down\n");
+            //printf("key1_down\n");
             if(bullet_arr[bullet_num-1]==1){
                 p1->state = Shoot_P1;
             }else{
