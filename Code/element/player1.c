@@ -1,4 +1,5 @@
 #include "player1.h"
+#include "player2.h"
 #include "../shapes/Rectangle.h"
 /*
    [player1 function]
@@ -29,24 +30,41 @@ Elements *New_player1(int label)
     return pObj;
 }
 void player1_update(Elements *self) {
+    //printf("update p1");
+    ElementVec allEle = _Get_all_elements(scene);
+    
+    Elements *ele_p2 = allEle.arr[Player2_L];
+    // int inter_label_p2 = ele_p2->inter_obj[0];
+    // ElementVec labelEle_p2 = _Get_label_elements(self, inter_label_p2);
+    player2 *p2 = ((player2 *)(ele_p2->pDerivedObj));
+
     player1 *p1 = ((player1 *)(self->pDerivedObj));
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
     // printf("%d\n", state);
-    int push1, push1_next;
-    if(key_state[ALLEGRO_KEY_1]){
-        if(state == P1_turn_L){
+    if(state == P1_turn_L){
+        if(mouse_x >= p1->x && mouse_x <= p1->x+p1->width && mouse_y >= p1->y && mouse_y <= p1->y+p1->height && ev.mouse.button == 1){
+            printf("key_1_presssed_pulse\n");
             //shoot my self
             //printf("key1_down\n");
             if(bullet_arr[bullet_num-1]==1){
                 p1->state = Shoot_P1;
+                bullet_num = bullet_num - 1;
             }else{
                 p1->state = Blank_p1;
+                bullet_num = bullet_num - 1;
             }
-        }else if(key_state[ALLEGRO_KEY_2]){
+        }else if(mouse_x >= p2->x && mouse_x <= p2->x+p2->width && mouse_y >= p2->y && mouse_y <= p2->y+p2->height && ev.mouse.button == 1){
+            printf("key_2_presssed_pulse\n");
             //shoot him
             if(bullet_arr[bullet_num-1]==1){
                 p1->state = Shoot_P2;
+                bullet_num = bullet_num - 1;
             }else{
                 p1->state = Blank_p2;
+                bullet_num = bullet_num - 1;
             }
         }else{
             p1->state = nothing;
@@ -55,7 +73,6 @@ void player1_update(Elements *self) {
     }else{
         p1->state = p1->state;
     }
-    
 }
 void player1_interact(Elements *self, Elements *tar) {
 
