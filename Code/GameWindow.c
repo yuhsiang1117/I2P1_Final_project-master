@@ -2,6 +2,7 @@
 #include "GAME_ASSERT.h"
 #include "global.h"
 #include "shapes/Shape.h"
+#include <stdlib.h>
 // include allegro
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -29,6 +30,8 @@ Game *New_Game()
 }
 void execute(Game *self)
 {
+    printf("game start\n");
+    int i, j, temp;
     // main game loop
     bool run = true;
     while (run)
@@ -77,14 +80,24 @@ void execute(Game *self)
         default:
             break;
         }
+
+        
+
     }
 }
+
+
 void game_init(Game *self)
 {
     printf("Game Initializing...\n");
     GAME_ASSERT(al_init(), "failed to initialize allegro.");
     // initialize allegro addons
     bool addon_init = true;
+    state = Reset_L;
+    printf("%d", state);
+    bullet_num = 0;
+    true_bullet = 0;
+    blank_bullet = 0;
     addon_init &= al_init_primitives_addon();
     addon_init &= al_init_font_addon();   // initialize the font addon
     addon_init &= al_init_ttf_addon();    // initialize the ttf (True Type Font) addon

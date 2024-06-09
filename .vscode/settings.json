@@ -1,5 +1,10 @@
 {
 	"terminal.integrated.env.windows": {
 		"PATH": "${workspaceFolder}\\MinGW\\bin;${env:PATH}"
+	},
+	"files.associations": {
+		"allegro_acodec.h": "c",
+		"player1.h": "c",
+		"player2.h": "c"
 	}
 }

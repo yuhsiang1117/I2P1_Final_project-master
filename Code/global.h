@@ -25,4 +25,19 @@ extern ALLEGRO_EVENT event;
 extern ALLEGRO_TIMER *fps;
 extern bool debug_mode;
 
+//state
+typedef enum StateType
+{   
+    Reset_L,
+    P1_turn_L,
+    P2_turn_L,
+
+} StateType;
+
+int state;
+int bullet_num;
+int bullet_arr[10];
+int true_bullet;
+int blank_bullet;
+
 #endif
