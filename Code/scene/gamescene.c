@@ -1,4 +1,5 @@
 #include "gamescene.h"
+
 /*
    [GameScene function]
 */
@@ -8,18 +9,19 @@ Scene *New_GameScene(int label)
     Scene *pObj = New_Scene(label);
     // setting derived object member
     pDerivedObj->background = al_load_bitmap("assets/image/room.png");
+    pDerivedObj->font = al_load_ttf_font("assets/font/pirulen.ttf", 36, 0);
     pObj->pDerivedObj = pDerivedObj;
     // register element
-    //_Register_elements(pObj, New_Floor(Floor_L));
-    //_Register_elements(pObj, New_Teleport(Teleport_L));
-    //_Register_elements(pObj, New_Tree(Tree_L));
-    //_Register_elements(pObj, New_Character(Character_L));
     _Register_elements(pObj, New_Beer(Beer_L));
-    _Register_elements(pObj, New_Table(Table_L));
     _Register_elements(pObj, New_Ciga(Ciga_L));
     _Register_elements(pObj, New_Key(Key_L));
-    //_Register_elements(pObj, New_Magnifier(Magnifier_L));
-   // _Register_elements(pObj, New_Handcuff(Handcuff_L));
+    //p2 = New_player2(player2_L);
+    _Register_elements(pObj, New_player1(player1_L));
+    _Register_elements(pObj, New_Table(Table_L));
+    _Register_elements(pObj, New_Chest(Chest_L));
+    _Register_elements(pObj, New_Magnifier(Magnifier_L));
+    _Register_elements(pObj, New_Handcuff(Handcuff_L));
+    //_Register_elements(pObj, p2);
     // setting derived object function
     pObj->Update = game_scene_update;
     pObj->Draw = game_scene_draw;
@@ -34,7 +36,6 @@ void game_scene_update(Scene *self)
     {
         allEle.arr[i]->Update(allEle.arr[i]);
     }
-
     // run interact for every element
     for (int i = 0; i < allEle.len; i++)
     {
@@ -50,6 +51,9 @@ void game_scene_update(Scene *self)
             }
         }
     }
+    /*Elements *ele = allEle.arr[player1_L];
+    player1* p1 = (player1*)(ele->pDerivedObj);
+    printf("%d\n",p1->hp);*/
     // remove element
     for (int i = 0; i < allEle.len; i++)
     {
@@ -62,7 +66,10 @@ void game_scene_draw(Scene *self)
 {
     al_clear_to_color(al_map_rgb(0, 0, 0));
     GameScene *gs = ((GameScene *)(self->pDerivedObj));
+    int x = 1;
     al_draw_bitmap(gs->background, 0, 0, 0);
+    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 125, 0, ALLEGRO_ALIGN_CENTRE, "Player 1");
+    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 925, 0, ALLEGRO_ALIGN_CENTRE, "Player 2");
     ElementVec allEle = _Get_all_elements(self);
     for (int i = 0; i < allEle.len; i++)
     {
