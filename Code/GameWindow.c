@@ -3,6 +3,7 @@
 #include "global.h"
 #include "shapes/Shape.h"
 // include allegro
+#include <stdlib.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>

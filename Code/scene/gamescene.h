@@ -1,8 +1,6 @@
 #ifndef GAMESCENE_H_INCLUDED
 #define GAMESCENE_H_INCLUDED
 #include "scene.h"
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
 #include "../element/element.h"
 #include "../element/beer.h"
 #include "../element/table.h"
@@ -10,23 +8,22 @@
 #include "../element/key.h"
 #include "../element/magnifier.h"
 #include "../element/handcuff.h"
-#include "../element/chest.h"
-#include "../element/player1.h"
-#include "../global.h"
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+
 /*
    [game scene object]
 */
 typedef enum EleType
-{
+{   
     Beer_L,
     Table_L,
     Ciga_L,
     Key_L,
     Magnifier_L,
     Handcuff_L,
-    Chest_L,
-    player1_L,
-    player2_L
+    Player1_L,
+    Player2_L
 } EleType;
 typedef struct _GameScene
 {

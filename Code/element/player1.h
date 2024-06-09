@@ -15,6 +15,7 @@ typedef enum P1_state
     nothing
 } P1_state;
 
+
 typedef struct _player1
 {
     int x, y;          // the position of image
@@ -23,9 +24,8 @@ typedef struct _player1
     Shape *hitbox; // the hitbox of object
     int hp;
     int state;
-    int item[6]; //{0:beer 1:ciga 2:key 3:handcuff 4:mgnifier 5:shotgun}
-}player1;
-
+    int item[6];
+} player1;
 Elements *New_player1(int label);
 void player1_update(Elements *self);
 void player1_interact(Elements *self, Elements *tar);
