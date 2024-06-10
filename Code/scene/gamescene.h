@@ -18,15 +18,16 @@
 */
 typedef enum EleType
 {   
+    Player1_L,
+    Player2_L,
     Beer_L,
     Table_L,
     Ciga_L,
     Key_L,
     Magnifier_L,
     Handcuff_L,
-    Player1_L,
-    Player2_L,
     Chest_L
+    
 } EleType;
 typedef struct _GameScene
 {

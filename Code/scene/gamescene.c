@@ -41,6 +41,7 @@ void game_scene_update(Scene *self)
 {
     // update every element
     ElementVec allEle = _Get_all_elements(self);
+    GameScene *gs = ((GameScene *)(self->pDerivedObj));
     for (int i = 0; i < allEle.len; i++)
     {
         allEle.arr[i]->Update(allEle.arr[i]);
@@ -84,10 +85,10 @@ void game_scene_update(Scene *self)
     // printf("%d\n", pl1->hp);
     // printf("%d\n", pl2->hp);
     srand((unsigned)time(&t));
-    printf("STATE:%d\n", state);
+    //printf("STATE:%d\n", state);
     switch (state){
         case Reset_L:
-        
+            //抽子彈
             if(bullet_num==0){
                 bullet_num = (rand() % 7) + 2;
                 true_bullet = (rand() % bullet_num) + 1;
@@ -111,6 +112,7 @@ void game_scene_update(Scene *self)
                     printf("%d ", bullet_arr[i]);
                 }printf("\n");
             }
+            //抽道具
             Elements *ches = New_Chest(Chest_L);
             _Register_elements(scene, ches);
             allEle = _Get_all_elements(self);
@@ -155,7 +157,7 @@ void game_scene_update(Scene *self)
                 printf("%d ",nowitem);
             }
             printf("\n");
-            printf("%d\n",p1->item[0]);
+            printf("player1 has 1=%d 2=%d 3=%d 4=%d 5=%d 6=%d\n",p1->item[0],p1->item[1],p1->item[2],p1->item[3],p1->item[4],p1->item[5]);
             int p2item = 0;
             for(int i=0;i<6;i++){
                 p2item += p2->item[i];
@@ -172,7 +174,7 @@ void game_scene_update(Scene *self)
                 printf("%d ",nowitem);
             }
             printf("\n");
-            printf("%d\n",p2->item[0]);
+            printf("player2 has 1=%d 2=%d 3=%d 4=%d 5=%d 6=%d\n",p2->item[0],p2->item[1],p2->item[2],p2->item[3],p2->item[4],p2->item[5]);
             state = P1_turn_L;
             break;
         case P1_turn_L:
@@ -277,14 +279,6 @@ void game_scene_draw(Scene *self)
     al_draw_bitmap(gs->background, 0, 0, 0);
     al_draw_text(gs->font, al_map_rgb(0, 0, 0), 125, 0, ALLEGRO_ALIGN_CENTRE, "Player 1");
     al_draw_text(gs->font, al_map_rgb(0, 0, 0), 925, 0, ALLEGRO_ALIGN_CENTRE, "Player 2");
-
-    for(i=0; i<bullet_num; i++){
-        if(bullet_arr[i]==1){
-            al_draw_text(gs->font, al_map_rgb(255, 0, 0), 200+ 40*i, 100, ALLEGRO_ALIGN_CENTRE, "1");
-        }else{
-            al_draw_text(gs->font, al_map_rgb(255, 0, 0), 200 + 40*i, 100, ALLEGRO_ALIGN_CENTRE, "0");
-        }
-    }
     // printf("game scene drawing2\n");
     // printf("%d\n", pl1->hp);
     // printf("%d\n", pl2->hp);
@@ -304,11 +298,11 @@ void game_scene_draw(Scene *self)
     // printf("game scene drawing3\n");
     if(pl2->hp == 4){
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "4");
-    }else if(pl1->hp == 3){
+    }else if(pl2->hp == 3){
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "3");
-    }else if(pl1->hp == 2){
+    }else if(pl2->hp == 2){
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "2");
-    }else if(pl1->hp == 1){
+    }else if(pl2->hp == 1){
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "1");
     }else{
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "0");

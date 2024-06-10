@@ -12,6 +12,7 @@ typedef struct _Ciga
     int width, height; // the width and height of image
     ALLEGRO_BITMAP *img;
     Shape *hitbox; // the hitbox of object
+    int state;
 } Ciga;
 Elements *New_Ciga(int label);
 void Ciga_update(Elements *self);

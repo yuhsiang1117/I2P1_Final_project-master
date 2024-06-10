@@ -16,6 +16,16 @@ typedef enum P1_state
     nothing
 } P1_state;
 
+typedef enum _Item_num
+{
+    Beer_num,
+    Ciga_num,
+    Handcuff_num,
+    Key_num,
+    Magnifier_num,
+    Shotgun_num
+}Item_num;
+
 
 typedef struct _player1
 {

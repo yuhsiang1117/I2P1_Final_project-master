@@ -25,7 +25,29 @@ Elements *New_Magnifier(int label)
     pObj->Destroy = Magnifier_destory;
     return pObj;
 }
-void Magnifier_update(Elements *self) {}
+void Magnifier_update(Elements *self) {
+    Magnifier *magnifier = (Magnifier*)(self->pDerivedObj);
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements* ele1 =  allEle.arr[Player1_L];
+    Elements* ele2 =  allEle.arr[Player2_L];
+    player1* p1=(player1*)(ele1->pDerivedObj);
+    player2* p2=(player2*)(ele2->pDerivedObj);
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
+    if(state == P1_turn_L){
+        if(p1->item[Magnifier_num]>0 && mouse_x >= magnifier->x && mouse_x <= magnifier->x+magnifier->width && mouse_y >= magnifier->y && mouse_y <= magnifier->y+magnifier->height && ev.mouse.button == 1){
+            magnifier->state = 1;
+            printf("use magnifier");
+            p1->item[Magnifier_num]--;
+        }
+    }
+    if(state == P2_turn_L){
+        if(p2->item[Magnifier_num]>0 && mouse_x >= (WIDTH-magnifier->width) && mouse_x <= WIDTH && mouse_y >= magnifier->y && mouse_y <= magnifier->y+magnifier->height && ev.mouse.button == 1)
+            magnifier->state = 1;
+    }
+}
 void Magnifier_interact(Elements *self, Elements *tar) {}
 void Magnifier_draw(Elements *self)
 {
