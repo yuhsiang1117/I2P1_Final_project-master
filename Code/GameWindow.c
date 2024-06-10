@@ -94,6 +94,7 @@ void game_init(Game *self)
     addon_init &= al_install_keyboard();  // install keyboard event
     addon_init &= al_install_mouse();     // install mouse event
     addon_init &= al_install_audio();     // install audio event
+    anime_counter = 0;
     GAME_ASSERT(addon_init, "failed to initialize allegro addons.");
     // Create display
     self->display = al_create_display(WIDTH, HEIGHT);
@@ -118,7 +119,7 @@ void game_init(Game *self)
     ALLEGRO_BITMAP *icon = al_load_bitmap("assets/image/icon.jpg");
     al_set_display_icon(self->display, icon);
     state = Reset_L;
-    shotgon_state = 0;
+    shot_state = 0;
 }
 bool game_update(Game *self)
 {

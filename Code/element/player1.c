@@ -94,3 +94,4 @@ void player1_destory(Elements *self)
     free(Obj);
     free(self);
 }
+

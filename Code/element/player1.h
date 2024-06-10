@@ -43,5 +43,6 @@ void player1_update(Elements *self);
 void player1_interact(Elements *self, Elements *tar);
 void player1_draw(Elements *self);
 void player1_destory(Elements *self);
+void player1_flay(Elements *self);
 
 #endif

@@ -39,13 +39,20 @@ void Handcuff_update(Elements *self) {
     if(state == P1_turn_L){
         if(p1->item[Handcuff_num]>0 && mouse_x >= handcuff->x && mouse_x <= handcuff->x+handcuff->width && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1){
             handcuff->state = 1;
-            printf("use handcuff");
+            printf("P1 use handcuff");
+            handcuff_state = 1;
             p1->item[Handcuff_num]--;
         }
     }
     if(state == P2_turn_L){
-        if(p2->item[Handcuff_num]>0 && mouse_x >= (WIDTH-handcuff->width) && mouse_x <= WIDTH && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1)
+        if(p2->item[Handcuff_num]>0 && mouse_x >= (WIDTH-handcuff->width) && mouse_x <= WIDTH && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1){
+            printf("P2 use handcuff");
             handcuff->state = 1;
+            handcuff->state = 1;
+            handcuff_state = 1;
+            p2->item[Handcuff_num]--;
+        }
+            
     }
 }
 void Handcuff_interact(Elements *self, Elements *tar) {}

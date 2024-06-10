@@ -12,7 +12,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include "sceneManager.h"
-
+#include "../algif5/src/algif.h"
+#include <time.h>
 /*
    [game scene object]
 */
@@ -39,5 +40,7 @@ Scene *New_GameScene(int label);
 void game_scene_update(Scene *self);
 void game_scene_draw(Scene *self);
 void game_scene_destroy(Scene *self);
+
+
 
 #endif

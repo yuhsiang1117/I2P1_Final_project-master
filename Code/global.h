@@ -39,12 +39,16 @@ int bullet_num;
 int bullet_arr[10];
 int true_bullet;
 int blank_bullet;
-int shot_state;
+
 
 int beerstate;
 int cigastate;
 int handcuffstate;
 int keystate;
 int magnifierstate;
+int shot_state;
+int handcuff_state;
+int anime_counter;
+
 
 #endif
