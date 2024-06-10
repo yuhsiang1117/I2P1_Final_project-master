@@ -12,6 +12,7 @@ typedef struct _Handcuff
     int width, height; // the width and height of image
     ALLEGRO_BITMAP *img;
     Shape *hitbox; // the hitbox of object
+    int state;
 } Handcuff;
 Elements *New_Handcuff(int label);
 void Handcuff_update(Elements *self);

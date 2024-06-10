@@ -3,6 +3,7 @@
 #include "element.h"
 #include "../scene/gamescene.h" // for element label
 #include "../shapes/Shape.h"
+#include "../global.h"
 /*
    [Beer object]
 */
@@ -12,6 +13,7 @@ typedef struct _Beer
     int width, height; // the width and height of image
     ALLEGRO_BITMAP *img;
     Shape *hitbox; // the hitbox of object
+    int state;
 } Beer;
 Elements *New_Beer(int label);
 void Beer_update(Elements *self);

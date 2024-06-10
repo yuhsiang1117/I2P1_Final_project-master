@@ -25,7 +25,29 @@ Elements *New_Handcuff(int label)
     pObj->Destroy = Handcuff_destory;
     return pObj;
 }
-void Handcuff_update(Elements *self) {}
+void Handcuff_update(Elements *self) {
+    Handcuff *handcuff = (Handcuff*)(self->pDerivedObj);
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements* ele1 =  allEle.arr[Player1_L];
+    Elements* ele2 =  allEle.arr[Player2_L];
+    player1* p1=(player1*)(ele1->pDerivedObj);
+    player2* p2=(player2*)(ele2->pDerivedObj);
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
+    if(state == P1_turn_L){
+        if(p1->item[Handcuff_num]>0 && mouse_x >= handcuff->x && mouse_x <= handcuff->x+handcuff->width && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1){
+            handcuff->state = 1;
+            printf("use handcuff");
+            p1->item[Handcuff_num]--;
+        }
+    }
+    if(state == P2_turn_L){
+        if(p2->item[Handcuff_num]>0 && mouse_x >= (WIDTH-handcuff->width) && mouse_x <= WIDTH && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1)
+            handcuff->state = 1;
+    }
+}
 void Handcuff_interact(Elements *self, Elements *tar) {}
 void Handcuff_draw(Elements *self)
 {

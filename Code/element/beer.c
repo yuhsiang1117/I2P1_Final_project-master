@@ -11,8 +11,10 @@ Elements *New_Beer(int label)
     pDerivedObj->img = al_load_bitmap("assets/image/beer.png");
     pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
     pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
-    pDerivedObj->x = 65;
-    pDerivedObj->y = HEIGHT - pDerivedObj->height;
+    pDerivedObj->x = 0;
+    pDerivedObj->y = pDerivedObj->height/2;
+    pDerivedObj->state = 0;
+    beerstate = 0;
     pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x + pDerivedObj->width / 3,
                                         pDerivedObj->y + pDerivedObj->height / 3,
                                         pDerivedObj->x + 2 * pDerivedObj->width / 3,
@@ -25,7 +27,34 @@ Elements *New_Beer(int label)
     pObj->Destroy = Beer_destory;
     return pObj;
 }
-void Beer_update(Elements *self) {}
+void Beer_update(Elements *self){
+    Beer *beer = (Beer*)(self->pDerivedObj);
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements* ele1 =  allEle.arr[Player1_L];
+    Elements* ele2 =  allEle.arr[Player2_L];
+    player1* p1=(player1*)(ele1->pDerivedObj);
+    player2* p2=(player2*)(ele2->pDerivedObj);
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
+    if(state == P1_turn_L){
+        if(p1->item[Beer_num]>0 && mouse_x >= beer->x && mouse_x <= beer->x+beer->width && mouse_y >= beer->y && mouse_y <= beer->y+beer->height && ev.mouse.button == 1){
+            beer->state = 1;
+            beerstate = 1;
+            printf("use beer");
+            p1->item[Beer_num]--;
+        }
+            
+    }
+    if(state == P2_turn_L){
+        if(p2->item[Beer_num]>0 && mouse_x >= beer->x && mouse_x <= beer->x+beer->width && mouse_y >= beer->y && mouse_y <= beer->y+beer->height && ev.mouse.button == 1){
+            beerstate = 1;
+            printf("use beer");
+            p2->item[Beer_num]--;
+        }
+    }
+}
 void Beer_interact(Elements *self, Elements *tar) {}
 void Beer_draw(Elements *self)
 {

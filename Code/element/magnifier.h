@@ -12,6 +12,7 @@ typedef struct _Magnifier
     int width, height; // the width and height of image
     ALLEGRO_BITMAP *img;
     Shape *hitbox; // the hitbox of object
+    int state;
 } Magnifier;
 Elements *New_Magnifier(int label);
 void Magnifier_update(Elements *self);
