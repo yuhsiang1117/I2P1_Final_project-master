@@ -40,4 +40,10 @@ int bullet_arr[10];
 int true_bullet;
 int blank_bullet;
 
+int beerstate;
+int cigastate;
+int handcuffstate;
+int keystate;
+int magnifierstate;
+
 #endif

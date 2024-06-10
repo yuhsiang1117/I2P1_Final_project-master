@@ -12,8 +12,9 @@ Elements *New_Beer(int label)
     pDerivedObj->width = al_get_bitmap_width(pDerivedObj->img);
     pDerivedObj->height = al_get_bitmap_height(pDerivedObj->img);
     pDerivedObj->x = 0;
-    pDerivedObj->y = pDerivedObj->height;
+    pDerivedObj->y = pDerivedObj->height/2;
     pDerivedObj->state = 0;
+    beerstate = 0;
     pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x + pDerivedObj->width / 3,
                                         pDerivedObj->y + pDerivedObj->height / 3,
                                         pDerivedObj->x + 2 * pDerivedObj->width / 3,
@@ -40,14 +41,18 @@ void Beer_update(Elements *self){
     if(state == P1_turn_L){
         if(p1->item[Beer_num]>0 && mouse_x >= beer->x && mouse_x <= beer->x+beer->width && mouse_y >= beer->y && mouse_y <= beer->y+beer->height && ev.mouse.button == 1){
             beer->state = 1;
+            beerstate = 1;
             printf("use beer");
             p1->item[Beer_num]--;
         }
             
     }
     if(state == P2_turn_L){
-        if(p2->item[Beer_num]>0 && mouse_x >= (WIDTH-beer->width) && mouse_x <= WIDTH && mouse_y >= beer->y && mouse_y <= beer->y+beer->height && ev.mouse.button == 1)
-            beer->state = 1;
+        if(p2->item[Beer_num]>0 && mouse_x >= beer->x && mouse_x <= beer->x+beer->width && mouse_y >= beer->y && mouse_y <= beer->y+beer->height && ev.mouse.button == 1){
+            beerstate = 1;
+            printf("use beer");
+            p2->item[Beer_num]--;
+        }
     }
 }
 void Beer_interact(Elements *self, Elements *tar) {}

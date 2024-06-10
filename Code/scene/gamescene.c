@@ -186,7 +186,12 @@ void game_scene_update(Scene *self)
                 pl2->hp = pl2->hp - 1;
                 pl1->state = nothing;
                 state = P2_turn_L;
-            }else if(pl1->state == Blank_p1){
+            }else if(pl1->state == Shoot_P2){
+                pl2->hp = pl2->hp - 2;
+                pl1->state = nothing;
+                state = P2_turn_L;
+            }
+            else if(pl1->state == Blank_p1){
                 pl1->state = nothing;
                 state = P1_turn_L;
             }else if(pl1->state == Blank_p2){
@@ -307,6 +312,20 @@ void game_scene_draw(Scene *self)
     }else{
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "0");
     }
+    //p1 item
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Beer_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Ciga_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Handcuff_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Key_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Magnifier_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Shotgun_num]);
+    //p2 item
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Beer_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Ciga_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Handcuff_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Key_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Magnifier_num]);
+    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Shotgun_num]);
 
     
     for (int i = 0; i < allEle.len; i++)
