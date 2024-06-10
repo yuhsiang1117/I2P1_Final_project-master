@@ -36,6 +36,7 @@ typedef struct _player1
     int hp;
     int state;
     int item[6];
+    int damage;
 } player1;
 Elements *New_player1(int label);
 void player1_update(Elements *self);

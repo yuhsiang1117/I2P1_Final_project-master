@@ -26,8 +26,8 @@ typedef enum EleType
     Key_L,
     Magnifier_L,
     Handcuff_L,
+    Shotgun_L,
     Chest_L
-    
 } EleType;
 typedef struct _GameScene
 {

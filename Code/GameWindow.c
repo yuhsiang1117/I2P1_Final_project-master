@@ -118,6 +118,7 @@ void game_init(Game *self)
     ALLEGRO_BITMAP *icon = al_load_bitmap("assets/image/icon.jpg");
     al_set_display_icon(self->display, icon);
     state = Reset_L;
+    shotgon_state = 0;
 }
 bool game_update(Game *self)
 {
