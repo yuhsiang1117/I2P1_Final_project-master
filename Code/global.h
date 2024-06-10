@@ -39,5 +39,6 @@ int bullet_num;
 int bullet_arr[10];
 int true_bullet;
 int blank_bullet;
+int shot_state;
 
 #endif

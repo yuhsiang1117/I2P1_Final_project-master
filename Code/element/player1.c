@@ -15,6 +15,10 @@ Elements *New_player1(int label)
     pDerivedObj->x = 85;
     pDerivedObj->y = HEIGHT - pDerivedObj->height;
     pDerivedObj->hp = 4;
+    pDerivedObj->damage = 1;
+    for(int i=0;i<6;i++){
+        pDerivedObj->item[i] = 0;
+    }
     pDerivedObj->state = nothing;
     pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x + pDerivedObj->width / 3,
                                         pDerivedObj->y + pDerivedObj->height / 3,
@@ -46,7 +50,7 @@ void player1_update(Elements *self) {
     // printf("%d\n", state);
     if(state == P1_turn_L){
         if(mouse_x >= p1->x && mouse_x <= p1->x+p1->width && mouse_y >= p1->y && mouse_y <= p1->y+p1->height && ev.mouse.button == 1){
-            printf("key_1_presssed_pulse\n");
+            printf("key_1_presssed_player1\n");
             //shoot my self
             //printf("key1_down\n");
             if(bullet_arr[bullet_num-1]==1){
@@ -57,7 +61,7 @@ void player1_update(Elements *self) {
                 bullet_num = bullet_num - 1;
             }
         }else if(mouse_x >= p2->x && mouse_x <= p2->x+p2->width && mouse_y >= p2->y && mouse_y <= p2->y+p2->height && ev.mouse.button == 1){
-            printf("key_2_presssed_pulse\n");
+            printf("key_2_presssed_player1\n");
             //shoot him
             if(bullet_arr[bullet_num-1]==1){
                 p1->state = Shoot_P2;

@@ -8,22 +8,26 @@
 #include "../element/key.h"
 #include "../element/magnifier.h"
 #include "../element/handcuff.h"
+#include "../element/chest.h"
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include "sceneManager.h"
 
 /*
    [game scene object]
 */
 typedef enum EleType
 {   
+    Player1_L,
+    Player2_L,
     Beer_L,
     Table_L,
     Ciga_L,
     Key_L,
     Magnifier_L,
     Handcuff_L,
-    Player1_L,
-    Player2_L
+    Shotgun_L,
+    Chest_L
 } EleType;
 typedef struct _GameScene
 {

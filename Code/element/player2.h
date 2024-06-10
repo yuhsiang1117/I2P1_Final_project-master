@@ -15,7 +15,8 @@ typedef struct _player2
     Shape *hitbox; // the hitbox of object
     int hp;
     int state;
-    
+    int item[6];
+    int damage
 } player2;
 
 typedef enum P2_state

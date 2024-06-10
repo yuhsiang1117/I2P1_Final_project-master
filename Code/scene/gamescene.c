@@ -2,6 +2,9 @@
 #include <time.h>
 #include "../element/player1.h"
 #include "../element/player2.h"
+#include "sceneManager.h"
+#include "../element/shotgun.h"
+#include "menu.h"
 /*
    [GameScene function]
 */
@@ -27,6 +30,8 @@ Scene *New_GameScene(int label)
     _Register_elements(pObj, New_Handcuff(Handcuff_L));
     _Register_elements(pObj, New_player1(Player1_L));
     _Register_elements(pObj, New_player2(Player2_L));
+    _Register_elements(pObj, New_shotgun(Shotgun_L));
+    //_Register_elements(pObj, New_Chest(Chest_L));
     pDerivedObj->font = al_load_ttf_font("assets/font/pirulen.ttf", 40, 0);
     
     // setting derived object function
@@ -79,6 +84,9 @@ void game_scene_update(Scene *self)
     // int inter_label_p2 = ele_p2->inter_obj[0];
     // ElementVec labelEle_p2 = _Get_label_elements(self, inter_label_p2);
     player2 *pl2 = ((player2 *)(ele_p2->pDerivedObj));
+
+    Elements *ele_shotgun = allEle.arr[Shotgun_L];
+    shotgun *shot = ((shotgun *)(ele_shotgun->pDerivedObj));
     // printf("stop at here\n");
     // printf("%d\n", pl1->hp);
     // printf("%d\n", pl2->hp);
@@ -104,30 +112,101 @@ void game_scene_update(Scene *self)
                             printf("%d ", bullet_arr[j]);
                         }printf("\n");
                 }
-                state = P1_turn_L;
                 // state = state;
                 for(i=0; i<bullet_num; i++){
                     printf("%d ", bullet_arr[i]);
                 }printf("\n");
-            } 
+            }
+            Elements *ches = New_Chest(Chest_L);
+            _Register_elements(scene, ches);
+            allEle = _Get_all_elements(self);
+            for (int i = 0; i < allEle.len; i++)
+            {
+                allEle.arr[i]->Update(allEle.arr[i]);
+            }
+            for (int i = 0; i < allEle.len; i++)
+            {
+                Elements *ele = allEle.arr[i];
+                ele->Draw(ele);
+            }
+            printf("%d  %d\n",allEle.len,Chest_L);
+            Elements* ele3 = allEle.arr[Chest_L];
+            Chest* chest = (Chest*)ele3->pDerivedObj;
+            while(chest->state == appear){
+                printf("state = %d\n",chest->state);
+                allEle.arr[Chest_L]->Update(allEle.arr[Chest_L]);
+                Elements *ele = allEle.arr[Chest_L];
+                ele->Draw(ele);
+            }
+            printf("Drawing!\n");
+            Elements* ele1 = allEle.arr[Player1_L];
+            Elements* ele2 = allEle.arr[Player2_L];
+            player1* p1 = (player1*)ele1->pDerivedObj;
+            player2* p2 = (player2*)ele2->pDerivedObj;
+            //printf("%d\n",ele->label);
+            //printf("%d\n",p1->item[0]);
+            int p1item = 0;
+            for(int i=0;i<6;i++){
+                p1item += p1->item[i];
+            }
+            srand(time(0));
+            for(int i=0;i<4;i++){
+                if(p1item>=6) break;
+                int nowitem;
+                //nowitem = Chest_drawitem();
+                nowitem = rand()%31;
+                nowitem %= 6;
+                p1->item[nowitem]++;
+                p1item++;
+                printf("%d ",nowitem);
+            }
+            printf("\n");
+            printf("%d\n",p1->item[0]);
+            int p2item = 0;
+            for(int i=0;i<6;i++){
+                p2item += p2->item[i];
+            }
+            srand(time(0));
+            for(int i=0;i<4;i++){
+                if(p2item>=6) break;
+                int nowitem;
+                //nowitem = Chest_drawitem();
+                nowitem = rand()%17;
+                nowitem %= 6;
+                p2->item[nowitem]++;
+                p2item++;
+                printf("%d ",nowitem);
+            }
+            printf("\n");
+            printf("%d\n",p2->item[0]);
+            state = P1_turn_L;
             break;
+        printf("state: %d");
         case P1_turn_L:
+            int pl1_damage = 1;
+            if(shot_state == 1){
+                pl1_damage = 2;
+            }
             if(pl1->state == Shoot_P1){
-                pl1->hp = pl1->hp - 1;
-                pl1->state = nothing;
+                pl1->hp = pl1->hp - pl1_damage;
+                shot_state = 0;
                 state = P2_turn_L;
             }else if(pl1->state == Shoot_P2){
-                pl2->hp = pl2->hp - 1;
+                pl2->hp = pl2->hp - pl1_damage;
                 pl1->state = nothing;
+                shot_state = 0;
                 state = P2_turn_L;
             }else if(pl1->state == Blank_p1){
                 pl1->state = nothing;
+                shot_state = 0;
                 state = P1_turn_L;
             }else if(pl1->state == Blank_p2){
                 pl1->state = nothing;
+                shot_state = 0;
                 state = P2_turn_L;
             }else if(bullet_num <= 0){
                 pl1->state = nothing;
+                shot_state = 0;
                 state = Reset_L;
             }else{
                 state = state;
@@ -135,22 +214,31 @@ void game_scene_update(Scene *self)
             break;
 
         case P2_turn_L:
+            int pl2_damage = 1;
+            if(shot_state==1){
+                pl2_damage = 2;
+            }
             if(pl2->state == P2_Shoot_P2){
                 pl2->state = P2_nothing;
-                pl2->hp = pl2->hp - 1;
+                pl2->hp = pl2->hp - pl2_damage;
+                shot_state = 0;
                 state = P1_turn_L;
             }else if(pl2->state == P2_Shoot_P1){
                 pl2->state = P2_nothing;
-                pl1->hp = pl1->hp - 1;
+                pl1->hp = pl1->hp - pl2_damage;
+                shot_state = 0;
                 state = P1_turn_L;
             }else if(pl1->state == P2_Blank_p2){
                 pl2->state = P2_nothing;
+                shot_state = 0;
                 state = P2_turn_L;
             }else if(pl1->state == P2_Blank_p1){
                 pl2->state = P2_nothing;
+                shot_state = 0;
                 state = P1_turn_L;
             }else if(bullet_num <= 0){
                 pl2->state = P2_nothing;
+                shot_state = 0;
                 state = Reset_L;
             }else{
                 state = state;
@@ -158,7 +246,7 @@ void game_scene_update(Scene *self)
             break;
         
         default:
-        state = state;
+            state = state;
             break;
     }
 
@@ -211,6 +299,8 @@ void game_scene_draw(Scene *self)
     al_clear_to_color(al_map_rgb(0, 0, 0));
     GameScene *gs = ((GameScene *)(self->pDerivedObj));
     al_draw_bitmap(gs->background, 0, 0, 0);
+    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 125, 0, ALLEGRO_ALIGN_CENTRE, "Player 1");
+    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 925, 0, ALLEGRO_ALIGN_CENTRE, "Player 2");
 
     for(i=0; i<bullet_num; i++){
         if(bullet_arr[i]==1){
@@ -224,29 +314,10 @@ void game_scene_draw(Scene *self)
     // printf("%d\n", pl2->hp);
     int pl1_x = 200;
     int pl2_x = 600;
-    if(pl1->hp == 4){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "4");
-    }else if(pl1->hp == 3){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "3");
-    }else if(pl1->hp == 2){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "2");
-    }else if(pl1->hp == 1){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "1");
-    }else{
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "0");
-    }
+    al_draw_textf(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "%d", pl1->hp);
     // printf("game scene drawing3\n");
-    if(pl2->hp == 4){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "4");
-    }else if(pl1->hp == 3){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "3");
-    }else if(pl1->hp == 2){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "2");
-    }else if(pl1->hp == 1){
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "1");
-    }else{
-        al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "0");
-    }
+    al_draw_textf(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "%d", pl2->hp);
+
 
     
     for (int i = 0; i < allEle.len; i++)

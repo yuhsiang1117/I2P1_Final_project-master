@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include "../global.h"
 #include "player1.h"
+#include "player2.h"
 
 /*
    [Chest object]
