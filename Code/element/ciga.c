@@ -37,22 +37,25 @@ void Ciga_update(Elements *self) {
     int mouse_x = ev.mouse.x;
     int mouse_y = ev.mouse.y;
     if(state == P1_turn_L){
-        if(p1->item[Ciga_num]>0 && mouse_x >= ciga->x && mouse_x <= ciga->x+ciga->width && mouse_y >= ciga->y && mouse_y <= ciga->y+ciga->height && ev.mouse.button == 1){
-            ciga->state = 1;
+        if(p1->item[Ciga_num]>0 && mouse_x >= 0 && mouse_x <= 96 && mouse_y >= 323 && mouse_y <= 385 && ev.mouse.button == 1){
+            cigastate = 1;
             printf("use ciga");
             p1->item[Ciga_num]--;
         }
     }
     if(state == P2_turn_L){
-        if(p2->item[Ciga_num]>0 && mouse_x >= (WIDTH-ciga->width) && mouse_x <= WIDTH && mouse_y >= ciga->y && mouse_y <= ciga->y+ciga->height && ev.mouse.button == 1)
-            ciga->state = 1;
+        if(p2->item[Ciga_num]>0 && mouse_x >= WIDTH-96 && mouse_x <= WIDTH && mouse_y >= 323 && mouse_y <= 385 && ev.mouse.button == 1){
+            cigastate = 1;
+            printf("use ciga");
+            p2->item[Ciga_num]--;
+        }
     }
 }
 void Ciga_interact(Elements *self, Elements *tar) {}
 void Ciga_draw(Elements *self)
 {
-    Ciga *Obj = ((Ciga *)(self->pDerivedObj));
-    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
+    /*Ciga *Obj = ((Ciga *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);*/
 }
 void Ciga_destory(Elements *self)
 {

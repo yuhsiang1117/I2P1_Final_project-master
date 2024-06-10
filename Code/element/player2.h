@@ -15,7 +15,7 @@ typedef struct _player2
     Shape *hitbox; // the hitbox of object
     int hp;
     int state;
-    int item[6];
+    int item[5];
     int damage
 } player2;
 

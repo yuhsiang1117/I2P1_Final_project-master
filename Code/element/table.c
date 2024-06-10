@@ -29,8 +29,8 @@ void Table_update(Elements *self) {}
 void Table_interact(Elements *self, Elements *tar) {}
 void Table_draw(Elements *self)
 {
-    Table *Obj = ((Table *)(self->pDerivedObj));
-    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
+    /*Table *Obj = ((Table *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);*/
 }
 void Table_destory(Elements *self)
 {

@@ -36,7 +36,7 @@ void Key_update(Elements *self) {
     al_wait_for_event(event_queue, &ev);
     int mouse_x = ev.mouse.x;
     int mouse_y = ev.mouse.y;
-    if(state == P1_turn_L){
+    /*if(state == P1_turn_L){
         if(p1->item[Key_num]>0 && mouse_x >= key->x && mouse_x <= key->x+key->width && mouse_y >= key->y && mouse_y <= key->y+key->height && ev.mouse.button == 1){
             key->state = 1;
             printf("use key");
@@ -46,13 +46,13 @@ void Key_update(Elements *self) {
     if(state == P2_turn_L){
         if(p2->item[Key_num]>0 && mouse_x >= (WIDTH-key->width) && mouse_x <= WIDTH && mouse_y >= key->y && mouse_y <= key->y+key->height && ev.mouse.button == 1)
             key->state = 1;
-    }
+    }*/
 }
 void Key_interact(Elements *self, Elements *tar) {}
 void Key_draw(Elements *self)
 {
-    Key *Obj = ((Key *)(self->pDerivedObj));
-    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
+    /*Key *Obj = ((Key *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);*/
 }
 void Key_destory(Elements *self)
 {

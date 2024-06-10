@@ -47,4 +47,8 @@ int handcuffstate;
 int keystate;
 int magnifierstate;
 
+int bulletout;
+
+int showbullet;
+
 #endif

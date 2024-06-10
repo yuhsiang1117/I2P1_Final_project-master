@@ -37,22 +37,25 @@ void Magnifier_update(Elements *self) {
     int mouse_x = ev.mouse.x;
     int mouse_y = ev.mouse.y;
     if(state == P1_turn_L){
-        if(p1->item[Magnifier_num]>0 && mouse_x >= magnifier->x && mouse_x <= magnifier->x+magnifier->width && mouse_y >= magnifier->y && mouse_y <= magnifier->y+magnifier->height && ev.mouse.button == 1){
-            magnifier->state = 1;
+        if(p1->item[Magnifier_num]>0 && mouse_x >= 0 && mouse_x <= 96 && mouse_y >= 276 && mouse_y <= 323 && ev.mouse.button == 1){
+            magnifierstate = 1;
             printf("use magnifier");
             p1->item[Magnifier_num]--;
         }
     }
     if(state == P2_turn_L){
-        if(p2->item[Magnifier_num]>0 && mouse_x >= (WIDTH-magnifier->width) && mouse_x <= WIDTH && mouse_y >= magnifier->y && mouse_y <= magnifier->y+magnifier->height && ev.mouse.button == 1)
-            magnifier->state = 1;
+        if(p2->item[Magnifier_num]>0 && mouse_x >= WIDTH-96 && mouse_x <= WIDTH && mouse_y >= 276 && mouse_y <= 323 && ev.mouse.button == 1){
+            magnifierstate = 1;
+            printf("use magnifier");
+            p2->item[Magnifier_num]--;
+        }
     }
 }
 void Magnifier_interact(Elements *self, Elements *tar) {}
 void Magnifier_draw(Elements *self)
 {
-    Magnifier *Obj = ((Magnifier *)(self->pDerivedObj));
-    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
+    /*Magnifier *Obj = ((Magnifier *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);*/
 }
 void Magnifier_destory(Elements *self)
 {
