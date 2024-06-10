@@ -44,7 +44,7 @@ void player2_update(Elements *self) {
     int mouse_y = ev.mouse.y;
     if(state == P2_turn_L){
         if(mouse_x >= p1->x && mouse_x <= p1->x+p1->width && mouse_y >= p1->y && mouse_y <= p1->y+p1->height && ev.mouse.button == 1){
-            printf("key_1_presssed");
+            printf("key_1_presssed\n");
             //shoot him self
             if(bullet_arr[bullet_num-1]==1){
                 p2->state = P2_Shoot_P1;
@@ -54,7 +54,7 @@ void player2_update(Elements *self) {
                 bullet_num = bullet_num - 1;
             }
         }else if(mouse_x >= p2->x && mouse_x <= p2->x+p2->width && mouse_y >= p2->y && mouse_y <= p2->y+p2->height && ev.mouse.button == 1){
-            printf("key_2_presssed");
+            printf("key_2_presssed\n");
             //shoot myself
             if(bullet_arr[bullet_num-1]==1){
                 p2->state = P2_Shoot_P2;

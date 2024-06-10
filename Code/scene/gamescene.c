@@ -86,7 +86,6 @@ void game_scene_update(Scene *self)
     printf("STATE:%d\n", state);
     switch (state){
         case Reset_L:
-        
             if(bullet_num==0){
                 bullet_num = (rand() % 7) + 2;
                 true_bullet = (rand() % bullet_num) + 1;
