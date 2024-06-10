@@ -43,7 +43,7 @@ int shot_state;
 
 int beerstate;
 int cigastate;
-int handcuffstate;
+int handcuff_state;
 int keystate;
 int magnifierstate;
 

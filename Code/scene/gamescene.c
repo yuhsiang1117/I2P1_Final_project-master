@@ -93,8 +93,8 @@ void game_scene_update(Scene *self)
     // printf("%d\n", pl2->hp);
     srand((unsigned)time(&t));
     //printf("STATE:%d\n", state);
-    int pl1_damage = 1;
-    int pl2_damage = 1;
+    int p1_damage = 1;
+    int p2_damage = 1;
     switch (state){
         case Reset_L:
             //抽子彈
@@ -188,25 +188,38 @@ void game_scene_update(Scene *self)
             state = P1_turn_L;
             break;
         case P1_turn_L:
+            p1_damage = 1;
             if(shot_state == 1){
-                pl1_damage = 2;
+                p1_damage = 2;
             }
             if(cigastate == 1){
                 pl1->hp = pl1->hp + 1;
                 cigastate = 0;
             }
             if(pl1->state == Shoot_P1){
-                pl1->hp = pl1->hp - pl1_damage;
+                pl1->hp = pl1->hp - p1_damage;
                 pl1->state = nothing;
                 magnifierstate = 0;
                 beerstate = 0;
-                state = P2_turn_L;
+                shot_state = 0;
+                if(handcuff_state == 1){
+                    state = P1_turn_L;
+                    handcuff_state = 0;
+                }else{
+                    state = P2_turn_L;
+                }
             }else if(pl1->state == Shoot_P2){
-                pl2->hp = pl2->hp - pl1_damage;
+                pl2->hp = pl2->hp - p1_damage;
                 pl1->state = nothing;
                 magnifierstate = 0;
                 beerstate = 0;
-                state = P2_turn_L;
+                shot_state = 0;
+                if(handcuff_state == 1){
+                    state = P1_turn_L;
+                    handcuff_state = 0;
+                }else{
+                    state = P2_turn_L;
+                }
             }
             else if(pl1->state == Blank_p1){
                 pl1->state = nothing;
@@ -219,7 +232,12 @@ void game_scene_update(Scene *self)
                 shot_state = 0;
                 magnifierstate = 0;
                 beerstate = 0;
-                state = P2_turn_L;
+                if(handcuff_state == 1){
+                    state = P1_turn_L;
+                    handcuff_state = 0;
+                }else{
+                    state = P2_turn_L;
+                }
             }else if(bullet_num <= 0){
                 pl1->state = nothing;
                 shot_state = 0;
@@ -233,7 +251,7 @@ void game_scene_update(Scene *self)
 
         case P2_turn_L:
             if(shot_state==1){
-                pl2_damage = 2;
+                p2_damage = 2;
             }
             if(cigastate == 1){
                 pl2->hp = pl2->hp + 1;
@@ -241,30 +259,45 @@ void game_scene_update(Scene *self)
             }
             if(pl2->state == P2_Shoot_P2){
                 pl2->state = P2_nothing;
-                pl2->hp = pl2->hp - pl2_damage;
+                pl2->hp = pl2->hp - p2_damage;
                 shot_state = 0;
                 magnifierstate = 0;
                 beerstate = 0;
-                state = P1_turn_L;
+                if(handcuff_state == 1){
+                    state = P2_turn_L;
+                    handcuff_state = 0;
+                }else{
+                    state = P1_turn_L;
+                }
             }else if(pl2->state == P2_Shoot_P1){
                 pl2->state = P2_nothing;
-                pl1->hp = pl1->hp - pl2_damage;
+                pl1->hp = pl1->hp - p2_damage;
                 shot_state = 0;
                 magnifierstate = 0;
                 beerstate = 0;
-                state = P1_turn_L;
-            }else if(pl1->state == P2_Blank_p2){
+                if(handcuff_state == 1){
+                    state = P2_turn_L;
+                    handcuff_state = 0;
+                }else{
+                    state = P1_turn_L;
+                }
+            }else if(pl2->state == P2_Blank_p2){
                 pl2->state = P2_nothing;
                 shot_state = 0;
                 magnifierstate = 0;
                 beerstate = 0;
                 state = P2_turn_L;
-            }else if(pl1->state == P2_Blank_p1){
+            }else if(pl2->state == P2_Blank_p1){
                 pl2->state = P2_nothing;
                 shot_state = 0;
                 magnifierstate = 0;
                 beerstate = 0;
-                state = P1_turn_L;
+                if(handcuff_state == 1){
+                    state = P2_turn_L;
+                    handcuff_state = 0;
+                }else{
+                    state = P1_turn_L;
+                }
             }else if(bullet_num <= 0){
                 pl2->state = P2_nothing;
                 shot_state = 0;

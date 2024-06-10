@@ -37,22 +37,26 @@ void Handcuff_update(Elements *self) {
     int mouse_x = ev.mouse.x;
     int mouse_y = ev.mouse.y;
     if(state == P1_turn_L){
-        if(p1->item[Handcuff_num]>0 && mouse_x >= 0 && mouse_x <= 96 && mouse_y >= 180 && mouse_y <= 222 && ev.mouse.button == 1){
-            handcuff->state = 1;
-            printf("use handcuff");
+        if(p1->item[Handcuff_num]>0 && mouse_x >= handcuff->x && mouse_x <= handcuff->x+handcuff->width && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1){
+            printf("P1 use handcuff");
+            handcuff_state = 1;
             p1->item[Handcuff_num]--;
         }
     }
     if(state == P2_turn_L){
-        if(p2->item[Handcuff_num]>0 && mouse_x >= WIDTH-96 && mouse_x <= WIDTH && mouse_y >= 180 && mouse_y <= 222 && ev.mouse.button == 1)
-            handcuff->state = 1;
+        if(p2->item[Handcuff_num]>0 && mouse_x >= (WIDTH-handcuff->width) && mouse_x <= WIDTH && mouse_y >= handcuff->y && mouse_y <= handcuff->y+handcuff->height && ev.mouse.button == 1){
+            printf("P2 use handcuff");
+            handcuff_state = 1;
+            p2->item[Handcuff_num]--;
+        }
+            
     }
 }
 void Handcuff_interact(Elements *self, Elements *tar) {}
 void Handcuff_draw(Elements *self)
 {
-    /*Handcuff *Obj = ((Handcuff *)(self->pDerivedObj));
-    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);*/
+    Handcuff *Obj = ((Handcuff *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
 }
 void Handcuff_destory(Elements *self)
 {
