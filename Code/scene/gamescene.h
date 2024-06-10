@@ -23,7 +23,6 @@ typedef enum EleType
     Beer_L,
     Table_L,
     Ciga_L,
-    Key_L,
     Magnifier_L,
     Handcuff_L,
     Shotgun_L,
@@ -32,7 +31,8 @@ typedef enum EleType
 typedef struct _GameScene
 {
     ALLEGRO_BITMAP *background;
-    ALLEGRO_FONT *font;
+    ALLEGRO_FONT *font1;
+    ALLEGRO_FONT *font2;
 
 } GameScene;
 Scene *New_GameScene(int label);

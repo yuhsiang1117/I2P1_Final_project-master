@@ -28,15 +28,28 @@ Elements *New_shotgun(int label)
 }
 void shotgun_update(Elements *self) {
     shotgun *sgun = ((shotgun *)(self->pDerivedObj));
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements* ele1 =  allEle.arr[Player1_L];
+    Elements* ele2 =  allEle.arr[Player2_L];
+    player1* p1=(player1*)(ele1->pDerivedObj);
+    player2* p2=(player2*)(ele2->pDerivedObj);
     ALLEGRO_EVENT ev;
     al_wait_for_event(event_queue, &ev);
     int mouse_x = ev.mouse.x;
     int mouse_y = ev.mouse.y;
     // printf("%d\n", state);
-    if(state == P1_turn_L || state == P2_turn_L){
-        if(mouse_x >= sgun->x && mouse_x <= sgun->x+sgun->width && mouse_y >= sgun->y && mouse_y <= sgun->y+sgun->height && ev.mouse.button == 1){
+    if(state == P1_turn_L){
+        if(p1->item[Shotgun_num]>0  && mouse_x >= 0 && mouse_x <= 96 && mouse_y >= 222 && mouse_y <= 276 && ev.mouse.button == 1){
             printf("shotgun_presssed\n");
             shot_state = 1;
+            p1->item[Shotgun_num]--;
+        }
+    }
+    if(state == P2_turn_L){
+        if(p2->item[Shotgun_num]>0 && mouse_x >= WIDTH-96 && mouse_x <= WIDTH && mouse_y >= 222 && mouse_y <= 276 && ev.mouse.button == 1){
+            printf("shotgun_presssed\n");
+            shot_state = 1;
+            p2->item[Shotgun_num]--;
         }
     }
 }
@@ -44,8 +57,8 @@ void shotgun_update(Elements *self) {
 void shotgun_interact(Elements *self, Elements *tar) {}
 void shotgun_draw(Elements *self)
 {
-    shotgun *Obj = ((shotgun *)(self->pDerivedObj));
-    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
+    /*shotgun *Obj = ((shotgun *)(self->pDerivedObj));
+    al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);*/
 
 }
 void shotgun_destory(Elements *self)

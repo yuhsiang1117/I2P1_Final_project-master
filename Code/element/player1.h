@@ -21,7 +21,6 @@ typedef enum _Item_num
     Beer_num,
     Ciga_num,
     Handcuff_num,
-    Key_num,
     Magnifier_num,
     Shotgun_num
 }Item_num;
@@ -35,7 +34,7 @@ typedef struct _player1
     Shape *hitbox; // the hitbox of object
     int hp;
     int state;
-    int item[6];
+    int item[5];
     int damage;
 } player1;
 Elements *New_player1(int label);

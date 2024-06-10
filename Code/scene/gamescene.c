@@ -25,14 +25,14 @@ Scene *New_GameScene(int label)
     _Register_elements(pObj, New_Beer(Beer_L));
     _Register_elements(pObj, New_Table(Table_L));
     _Register_elements(pObj, New_Ciga(Ciga_L));
-    _Register_elements(pObj, New_Key(Key_L));
     _Register_elements(pObj, New_Magnifier(Magnifier_L));
     _Register_elements(pObj, New_Handcuff(Handcuff_L));
     _Register_elements(pObj, New_player1(Player1_L));
     _Register_elements(pObj, New_player2(Player2_L));
     _Register_elements(pObj, New_shotgun(Shotgun_L));
     //_Register_elements(pObj, New_Chest(Chest_L));
-    pDerivedObj->font = al_load_ttf_font("assets/font/pirulen.ttf", 40, 0);
+    pDerivedObj->font1 = al_load_ttf_font("assets/font/pirulen.ttf", 40, 0);
+    pDerivedObj->font2 = al_load_ttf_font("assets/font/pirulen.ttf", 20, 0);
     
     // setting derived object function
     pObj->Update = game_scene_update;
@@ -93,6 +93,8 @@ void game_scene_update(Scene *self)
     // printf("%d\n", pl2->hp);
     srand((unsigned)time(&t));
     //printf("STATE:%d\n", state);
+    int pl1_damage = 1;
+    int pl2_damage = 1;
     switch (state){
         case Reset_L:
             //抽子彈
@@ -119,6 +121,7 @@ void game_scene_update(Scene *self)
                     printf("%d ", bullet_arr[i]);
                 }printf("\n");
             }
+            showbullet = 1;
             //抽道具
             Elements *ches = New_Chest(Chest_L);
             _Register_elements(scene, ches);
@@ -149,7 +152,7 @@ void game_scene_update(Scene *self)
             //printf("%d\n",ele->label);
             //printf("%d\n",p1->item[0]);
             int p1item = 0;
-            for(int i=0;i<6;i++){
+            for(int i=0;i<5;i++){
                 p1item += p1->item[i];
             }
             srand(time(0));
@@ -158,15 +161,15 @@ void game_scene_update(Scene *self)
                 int nowitem;
                 //nowitem = Chest_drawitem();
                 nowitem = rand()%31;
-                nowitem %= 6;
+                nowitem %= 5;
                 p1->item[nowitem]++;
                 p1item++;
                 printf("%d ",nowitem);
             }
             printf("\n");
-            printf("player1 has 1=%d 2=%d 3=%d 4=%d 5=%d 6=%d\n",p1->item[0],p1->item[1],p1->item[2],p1->item[3],p1->item[4],p1->item[5]);
+            printf("player1 has 1=%d 2=%d 3=%d 4=%d 5=%d\n",p1->item[0],p1->item[1],p1->item[2],p1->item[3],p1->item[4]);
             int p2item = 0;
-            for(int i=0;i<6;i++){
+            for(int i=0;i<5;i++){
                 p2item += p2->item[i];
             }
             srand(time(0));
@@ -175,44 +178,53 @@ void game_scene_update(Scene *self)
                 int nowitem;
                 //nowitem = Chest_drawitem();
                 nowitem = rand()%17;
-                nowitem %= 6;
+                nowitem %= 5;
                 p2->item[nowitem]++;
                 p2item++;
                 printf("%d ",nowitem);
             }
             printf("\n");
-            printf("player2 has 1=%d 2=%d 3=%d 4=%d 5=%d 6=%d\n",p2->item[0],p2->item[1],p2->item[2],p2->item[3],p2->item[4],p2->item[5]);
+            printf("player2 has 1=%d 2=%d 3=%d 4=%d 5=%d\n",p2->item[0],p2->item[1],p2->item[2],p2->item[3],p2->item[4]);
             state = P1_turn_L;
             break;
         case P1_turn_L:
-            int pl1_damage = 1;
             if(shot_state == 1){
                 pl1_damage = 2;
             }
+            if(cigastate == 1){
+                pl1->hp = pl1->hp + 1;
+                cigastate = 0;
+            }
             if(pl1->state == Shoot_P1){
-                pl1->hp = pl1->hp - 1;
+                pl1->hp = pl1->hp - pl1_damage;
                 pl1->state = nothing;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P2_turn_L;
             }else if(pl1->state == Shoot_P2){
-                pl2->hp = pl2->hp - 1;
+                pl2->hp = pl2->hp - pl1_damage;
                 pl1->state = nothing;
-                state = P2_turn_L;
-            }else if(pl1->state == Shoot_P2){
-                pl2->hp = pl2->hp - 2;
-                pl1->state = nothing;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P2_turn_L;
             }
             else if(pl1->state == Blank_p1){
                 pl1->state = nothing;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P1_turn_L;
             }else if(pl1->state == Blank_p2){
                 pl1->state = nothing;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P2_turn_L;
             }else if(bullet_num <= 0){
                 pl1->state = nothing;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = Reset_L;
             }else{
                 state = state;
@@ -220,31 +232,44 @@ void game_scene_update(Scene *self)
             break;
 
         case P2_turn_L:
-            int pl2_damage = 1;
             if(shot_state==1){
                 pl2_damage = 2;
+            }
+            if(cigastate == 1){
+                pl2->hp = pl2->hp + 1;
+                cigastate = 0;
             }
             if(pl2->state == P2_Shoot_P2){
                 pl2->state = P2_nothing;
                 pl2->hp = pl2->hp - pl2_damage;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P1_turn_L;
             }else if(pl2->state == P2_Shoot_P1){
                 pl2->state = P2_nothing;
                 pl1->hp = pl1->hp - pl2_damage;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P1_turn_L;
             }else if(pl1->state == P2_Blank_p2){
                 pl2->state = P2_nothing;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P2_turn_L;
             }else if(pl1->state == P2_Blank_p1){
                 pl2->state = P2_nothing;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = P1_turn_L;
             }else if(bullet_num <= 0){
                 pl2->state = P2_nothing;
                 shot_state = 0;
+                magnifierstate = 0;
+                beerstate = 0;
                 state = Reset_L;
             }else{
                 state = state;
@@ -305,16 +330,17 @@ void game_scene_draw(Scene *self)
     al_clear_to_color(al_map_rgb(0, 0, 0));
     GameScene *gs = ((GameScene *)(self->pDerivedObj));
     al_draw_bitmap(gs->background, 0, 0, 0);
-    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 125, 0, ALLEGRO_ALIGN_CENTRE, "Player 1");
-    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 925, 0, ALLEGRO_ALIGN_CENTRE, "Player 2");
+    al_draw_text(gs->font1, al_map_rgb(255, 0, 0), 250, 375, ALLEGRO_ALIGN_CENTRE, "Player 1");
+    al_draw_text(gs->font1, al_map_rgb(255, 0, 0), WIDTH-250, 375, ALLEGRO_ALIGN_CENTRE, "Player 2");
     // printf("game scene drawing2\n");
     // printf("%d\n", pl1->hp);
     // printf("%d\n", pl2->hp);
     int pl1_x = 200;
     int pl2_x = 600;
-    al_draw_textf(gs->font, al_map_rgb(255, 0, 0), pl1_x, 150, ALLEGRO_ALIGN_CENTRE, "%d", pl1->hp);
+    al_draw_textf(gs->font1, al_map_rgb(255, 0, 0), 96, 50, ALLEGRO_ALIGN_CENTRE, "  = %d", pl1->hp);
+    al_draw_textf(gs->font1, al_map_rgb(255, 0, 0), WIDTH-96, 50, ALLEGRO_ALIGN_CENTRE, "%d =  ", pl2->hp);
     // printf("game scene drawing3\n");
-    if(pl2->hp == 4){
+    /*if(pl2->hp == 4){
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "4");
     }else if(pl2->hp == 3){
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "3");
@@ -324,21 +350,60 @@ void game_scene_draw(Scene *self)
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "1");
     }else{
         al_draw_text(gs->font, al_map_rgb(255, 0, 0), pl2_x, 150, ALLEGRO_ALIGN_CENTRE, "0");
-    }
+    }*/
     //p1 item
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Beer_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Ciga_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Handcuff_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Key_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Magnifier_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p1 beer x%d",pl1->item[Shotgun_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 96, 120+20, ALLEGRO_ALIGN_CENTRE, " x %d",pl1->item[Beer_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 96, 323+5, ALLEGRO_ALIGN_CENTRE, " x %d",pl1->item[Ciga_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 96, 180+5, ALLEGRO_ALIGN_CENTRE, " x %d",pl1->item[Handcuff_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 96, 276, ALLEGRO_ALIGN_CENTRE, " x %d",pl1->item[Magnifier_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 96, 230, ALLEGRO_ALIGN_CENTRE, " x %d",pl1->item[Shotgun_num]);
     //p2 item
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Beer_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Ciga_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Handcuff_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Key_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Magnifier_num]);
-    al_draw_textf(gs->font, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2, ALLEGRO_ALIGN_CENTRE, "p2 beer x%d",pl2->item[Shotgun_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), WIDTH-96, 120+20, ALLEGRO_ALIGN_CENTRE, "%d x ",pl2->item[Beer_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), WIDTH-96, 323+5, ALLEGRO_ALIGN_CENTRE, "%d x ",pl2->item[Ciga_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), WIDTH-96, 180+5, ALLEGRO_ALIGN_CENTRE, "%d x ",pl2->item[Handcuff_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), WIDTH-96, 276, ALLEGRO_ALIGN_CENTRE, "%d x ",pl2->item[Magnifier_num]);
+    al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), WIDTH-96, 230, ALLEGRO_ALIGN_CENTRE, "%d x ",pl2->item[Shotgun_num]);
+
+    if(state == P1_turn_L){
+        al_draw_text(gs->font1, al_map_rgb(0, 0, 0), WIDTH/2, 50, ALLEGRO_ALIGN_CENTRE, "P1's turn");
+    }
+    else if(state == P2_turn_L){
+        al_draw_text(gs->font1, al_map_rgb(0, 0, 0), WIDTH/2, 50, ALLEGRO_ALIGN_CENTRE, "P2's turn");
+    }
+    else{
+        al_draw_text(gs->font1, al_map_rgb(0, 0, 0), WIDTH/2, 50, ALLEGRO_ALIGN_CENTRE, "Drawing item");
+    }
+    int space = 0;
+    for(i=0; i<bullet_num; i++){
+        if(bullet_arr[i]==1){
+            al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 300 + 50*space, 100, ALLEGRO_ALIGN_CENTRE, "%d",bullet_arr[i]);
+            space++;
+        }
+    }
+    for(i=0; i<bullet_num; i++){
+        if(bullet_arr[i]==0){
+            al_draw_textf(gs->font2, al_map_rgb(255, 255, 255), 300 + 50*space, 100, ALLEGRO_ALIGN_CENTRE, "%d",bullet_arr[i]);
+            space++;
+        }
+    }
+
+    if(magnifierstate == 1){
+        if(bullet_arr[bullet_num-1] == 1){
+            al_draw_text(gs->font2, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2-50, ALLEGRO_ALIGN_CENTRE, "This bullet is real.");
+        }
+        else{
+            al_draw_text(gs->font2, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/2-50, ALLEGRO_ALIGN_CENTRE, "This bullet is blank.");
+        }
+       
+    }
+    if(beerstate == 1){
+        if(bulletout == 1){
+            al_draw_text(gs->font2, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/4-50, ALLEGRO_ALIGN_CENTRE, "unloaded a real bullet");
+        }
+        else{
+            al_draw_text(gs->font2, al_map_rgb(255, 255, 255), WIDTH/2, HEIGHT/4-50, ALLEGRO_ALIGN_CENTRE, "unloaded a blank bullet");
+        }
+    }
 
     
     for (int i = 0; i < allEle.len; i++)
