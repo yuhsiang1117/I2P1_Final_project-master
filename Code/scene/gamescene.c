@@ -27,6 +27,7 @@ Scene *New_GameScene(int label)
     _Register_elements(pObj, New_Handcuff(Handcuff_L));
     _Register_elements(pObj, New_player1(Player1_L));
     _Register_elements(pObj, New_player2(Player2_L));
+    //_Register_elements(pObj, New_Chest(Chest_L));
     pDerivedObj->font = al_load_ttf_font("assets/font/pirulen.ttf", 40, 0);
     
     // setting derived object function
@@ -105,13 +106,76 @@ void game_scene_update(Scene *self)
                             printf("%d ", bullet_arr[j]);
                         }printf("\n");
                 }
-                state = P1_turn_L;
                 // state = state;
                 for(i=0; i<bullet_num; i++){
                     printf("%d ", bullet_arr[i]);
                 }printf("\n");
-            } 
+            }
+            Elements *ches = New_Chest(Chest_L);
+            _Register_elements(scene, ches);
+            allEle = _Get_all_elements(self);
+            for (int i = 0; i < allEle.len; i++)
+            {
+                allEle.arr[i]->Update(allEle.arr[i]);
+            }
+            for (int i = 0; i < allEle.len; i++)
+            {
+                Elements *ele = allEle.arr[i];
+                ele->Draw(ele);
+            }
+            printf("%d  %d\n",allEle.len,Chest_L);
+            Elements* ele3 = allEle.arr[Chest_L];
+            Chest* chest = (Chest*)ele3->pDerivedObj;
+            while(chest->state == appear){
+                printf("state = %d\n",chest->state);
+                allEle.arr[Chest_L]->Update(allEle.arr[Chest_L]);
+                Elements *ele = allEle.arr[Chest_L];
+                ele->Draw(ele);
+            }
+            printf("Drawing!\n");
+            Elements* ele1 = allEle.arr[Player1_L];
+            Elements* ele2 = allEle.arr[Player2_L];
+            player1* p1 = (player1*)ele1->pDerivedObj;
+            player2* p2 = (player2*)ele2->pDerivedObj;
+            //printf("%d\n",ele->label);
+            //printf("%d\n",p1->item[0]);
+            int p1item = 0;
+            for(int i=0;i<6;i++){
+                p1item += p1->item[i];
+            }
+            srand(time(0));
+            for(int i=0;i<4;i++){
+                if(p1item>=6) break;
+                int nowitem;
+                //nowitem = Chest_drawitem();
+                nowitem = rand()%31;
+                nowitem %= 6;
+                p1->item[nowitem]++;
+                p1item++;
+                printf("%d ",nowitem);
+            }
+            printf("\n");
+            printf("%d\n",p1->item[0]);
+            int p2item = 0;
+            for(int i=0;i<6;i++){
+                p2item += p2->item[i];
+            }
+            srand(time(0));
+            for(int i=0;i<4;i++){
+                if(p2item>=6) break;
+                int nowitem;
+                //nowitem = Chest_drawitem();
+                nowitem = rand()%17;
+                nowitem %= 6;
+                p2->item[nowitem]++;
+                p2item++;
+                printf("%d ",nowitem);
+            }
+            printf("\n");
+            printf("%d\n",p2->item[0]);
+            state = P1_turn_L;
             break;
+        printf("state: %d");
         case P1_turn_L:
             if(pl1->state == Shoot_P1){
                 pl1->hp = pl1->hp - 1;
@@ -159,7 +223,7 @@ void game_scene_update(Scene *self)
             break;
         
         default:
-        state = state;
+            state = state;
             break;
     }
 
@@ -212,6 +276,8 @@ void game_scene_draw(Scene *self)
     al_clear_to_color(al_map_rgb(0, 0, 0));
     GameScene *gs = ((GameScene *)(self->pDerivedObj));
     al_draw_bitmap(gs->background, 0, 0, 0);
+    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 125, 0, ALLEGRO_ALIGN_CENTRE, "Player 1");
+    al_draw_text(gs->font, al_map_rgb(0, 0, 0), 925, 0, ALLEGRO_ALIGN_CENTRE, "Player 2");
 
     for(i=0; i<bullet_num; i++){
         if(bullet_arr[i]==1){

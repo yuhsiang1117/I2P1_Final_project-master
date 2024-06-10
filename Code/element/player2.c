@@ -16,6 +16,9 @@ Elements *New_player2(int label)
     pDerivedObj->y = HEIGHT - pDerivedObj->height;
     pDerivedObj->hp = 4;
     pDerivedObj->state = P2_nothing;
+    for(int i=0;i<6;i++){
+        pDerivedObj->item[i] = 0;
+    }
     pDerivedObj->hitbox = New_Rectangle(pDerivedObj->x + pDerivedObj->width / 3,
                                         pDerivedObj->y + pDerivedObj->height / 3,
                                         pDerivedObj->x + 2 * pDerivedObj->width / 3,

@@ -55,7 +55,7 @@ void Chest_update(Elements *self)
     int mouse_y = ev.mouse.y;
     // use the idea of finite state machine to deal with different state
     Chest *che = ((Chest *)(self->pDerivedObj));
-    if (che->state == appear)
+    if(che->state == appear)
     {
         if(mouse_x >= che->x && mouse_x <= che->x+che->width && mouse_y >= che->y && mouse_y <= che->y+che->height && ev.mouse.button == 1){
             che->state = opened;
@@ -64,30 +64,8 @@ void Chest_update(Elements *self)
             che->state = appear;
         }
     }
-    else if (che->state == opened){
+    else if(che->state == opened){
         if (che->gif_status[che->state]->done){
-            printf("Drawing!\n");
-            ElementVec allEle = _Get_all_elements(scene);
-            Elements* ele = allEle.arr[7];
-            player1* p1 = (player1*)ele->pDerivedObj;
-            //printf("%d\n",ele->label);
-            printf("%d\n",p1->item[0]);
-            int p1item = 0;
-            for(int i=0;i<6;i++){
-                p1item += p1->item[i];
-            }
-            srand(time(0));
-            for(int i=0;i<4;i++){
-                if(p1item>=6) break;
-                int nowitem;
-                //nowitem = Chest_drawitem();
-                nowitem = rand()%6;
-                p1->item[nowitem]++;
-                p1item++;
-                printf("%d ",nowitem);
-            }
-            printf("\n");
-            printf("%d\n",p1->item[0]);
             self->dele = true;
         }
     }
