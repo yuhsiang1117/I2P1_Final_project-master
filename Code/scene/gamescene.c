@@ -175,7 +175,6 @@ void game_scene_update(Scene *self)
             printf("%d\n",p2->item[0]);
             state = P1_turn_L;
             break;
-        printf("state: %d");
         case P1_turn_L:
             if(pl1->state == Shoot_P1){
                 pl1->hp = pl1->hp - 1;
