@@ -25,10 +25,23 @@ Elements *New_Ciga(int label)
     pObj->Destroy = Ciga_destory;
     return pObj;
 }
-void Ciga_update(Elements *self) {}
+void Ciga_update(Elements *self) {
+    Ciga *cga = ((Ciga *)(self->pDerivedObj));
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
+    // printf("%d\n", state);
+    if(state == P1_turn_L || state == P2_turn_L){
+        if(mouse_x >= cga->x && mouse_x <= cga->x+cga->width && mouse_y >= cga->y && mouse_y <= cga->y+cga->height && ev.mouse.button == 1){
+            printf("Ciga_presssed\n");
+            ciga_state = 1;
+        }
+    }
+}
 void Ciga_interact(Elements *self, Elements *tar) {}
 void Ciga_draw(Elements *self)
-{
+{   
     Ciga *Obj = ((Ciga *)(self->pDerivedObj));
     al_draw_bitmap(Obj->img, Obj->x, Obj->y, 0);
 }

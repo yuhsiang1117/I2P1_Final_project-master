@@ -190,12 +190,22 @@ void game_scene_update(Scene *self)
             if(pl1->state == Shoot_P1){
                 pl1->hp = pl1->hp - pl1_damage;
                 shot_state = 0;
-                state = P2_turn_L;
+                if(ciga_state==1){
+                    state = P1_turn_L;
+                    ciga_state = 0;
+                }else{
+                    state = P2_turn_L;
+                }
             }else if(pl1->state == Shoot_P2){
                 pl2->hp = pl2->hp - pl1_damage;
                 pl1->state = nothing;
                 shot_state = 0;
-                state = P2_turn_L;
+                if(ciga_state==1){
+                    state = P1_turn_L;
+                    ciga_state = 0;
+                }else{
+                    state = P2_turn_L;
+                }
             }else if(pl1->state == Blank_p1){
                 pl1->state = nothing;
                 shot_state = 0;
@@ -203,7 +213,12 @@ void game_scene_update(Scene *self)
             }else if(pl1->state == Blank_p2){
                 pl1->state = nothing;
                 shot_state = 0;
-                state = P2_turn_L;
+                if(ciga_state==1){
+                    state = P1_turn_L;
+                    ciga_state = 0;
+                }else{
+                    state = P2_turn_L;
+                }
             }else if(bullet_num <= 0){
                 pl1->state = nothing;
                 shot_state = 0;
