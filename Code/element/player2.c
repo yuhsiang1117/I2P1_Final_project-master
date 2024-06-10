@@ -1,4 +1,5 @@
 #include "player2.h"
+#include "player1.h"
 #include "../shapes/Rectangle.h"
 /*
    [player2 function]
@@ -33,9 +34,20 @@ Elements *New_player2(int label)
     return pObj;
 }
 void player2_update(Elements *self) {
-     player2 *p2 = ((player2 *)(self->pDerivedObj));
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements *ele_p1 = allEle.arr[Player1_L];
+    // int inter_label_p1 = ele_p1->inter_obj[0];
+    // ElementVec labelEle_p1 = _Get_label_elements(self, inter_label_p1);
+    player1 *p1 = ((player1 *)(ele_p1->pDerivedObj));
+    player2 *p2 = ((player2 *)(self->pDerivedObj));
+
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
     if(state == P2_turn_L){
-        if(key_state[ALLEGRO_KEY_1]){
+        if(mouse_x >= p1->x && mouse_x <= p1->x+p1->width && mouse_y >= p1->y && mouse_y <= p1->y+p1->height && ev.mouse.button == 1){
+            printf("key_1_presssed");
             //shoot him self
             if(bullet_arr[bullet_num-1]==1){
                 p2->state = P2_Shoot_P1;
@@ -44,7 +56,8 @@ void player2_update(Elements *self) {
                 p2->state = P2_Blank_p1;
                 bullet_num = bullet_num - 1;
             }
-        }else if(key_state[ALLEGRO_KEY_2]){
+        }else if(mouse_x >= p2->x && mouse_x <= p2->x+p2->width && mouse_y >= p2->y && mouse_y <= p2->y+p2->height && ev.mouse.button == 1){
+            printf("key_2_presssed");
             //shoot myself
             if(bullet_arr[bullet_num-1]==1){
                 p2->state = P2_Shoot_P2;
