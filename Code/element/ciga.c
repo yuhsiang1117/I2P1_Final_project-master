@@ -26,11 +26,21 @@ Elements *New_Ciga(int label)
     return pObj;
 }
 void Ciga_update(Elements *self) {
+<<<<<<< HEAD
     Ciga *cga = ((Ciga *)(self->pDerivedObj));
+=======
+    Ciga *ciga = (Ciga*)(self->pDerivedObj);
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements* ele1 =  allEle.arr[Player1_L];
+    Elements* ele2 =  allEle.arr[Player2_L];
+    player1* p1=(player1*)(ele1->pDerivedObj);
+    player2* p2=(player2*)(ele2->pDerivedObj);
+>>>>>>> 3324f753f710ed86f41be126495dc6ab06c934c6
     ALLEGRO_EVENT ev;
     al_wait_for_event(event_queue, &ev);
     int mouse_x = ev.mouse.x;
     int mouse_y = ev.mouse.y;
+<<<<<<< HEAD
     // printf("%d\n", state);
     if(state == P1_turn_L || state == P2_turn_L){
         if(mouse_x >= cga->x && mouse_x <= cga->x+cga->width && mouse_y >= cga->y && mouse_y <= cga->y+cga->height && ev.mouse.button == 1){
@@ -38,6 +48,19 @@ void Ciga_update(Elements *self) {
             ciga_state = 1;
         }
     }
+=======
+    if(state == P1_turn_L){
+        if(p1->item[Ciga_num]>0 && mouse_x >= ciga->x && mouse_x <= ciga->x+ciga->width && mouse_y >= ciga->y && mouse_y <= ciga->y+ciga->height && ev.mouse.button == 1){
+            ciga->state = 1;
+            printf("use ciga");
+            p1->item[Ciga_num]--;
+        }
+    }
+    if(state == P2_turn_L){
+        if(p2->item[Ciga_num]>0 && mouse_x >= (WIDTH-ciga->width) && mouse_x <= WIDTH && mouse_y >= ciga->y && mouse_y <= ciga->y+ciga->height && ev.mouse.button == 1)
+            ciga->state = 1;
+    }
+>>>>>>> 3324f753f710ed86f41be126495dc6ab06c934c6
 }
 void Ciga_interact(Elements *self, Elements *tar) {}
 void Ciga_draw(Elements *self)

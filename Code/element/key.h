@@ -12,6 +12,7 @@ typedef struct _Key
     int width, height; // the width and height of image
     ALLEGRO_BITMAP *img;
     Shape *hitbox; // the hitbox of object
+    int state;
 } Key;
 Elements *New_Key(int label);
 void Key_update(Elements *self);

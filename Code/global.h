@@ -42,4 +42,10 @@ int blank_bullet;
 int shot_state;
 int ciga_state;
 
+int beerstate;
+int cigastate;
+int handcuffstate;
+int keystate;
+int magnifierstate;
+
 #endif

@@ -25,7 +25,29 @@ Elements *New_Key(int label)
     pObj->Destroy = Key_destory;
     return pObj;
 }
-void Key_update(Elements *self) {}
+void Key_update(Elements *self) {
+    Key *key = (Key*)(self->pDerivedObj);
+    ElementVec allEle = _Get_all_elements(scene);
+    Elements* ele1 =  allEle.arr[Player1_L];
+    Elements* ele2 =  allEle.arr[Player2_L];
+    player1* p1=(player1*)(ele1->pDerivedObj);
+    player2* p2=(player2*)(ele2->pDerivedObj);
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    int mouse_x = ev.mouse.x;
+    int mouse_y = ev.mouse.y;
+    if(state == P1_turn_L){
+        if(p1->item[Key_num]>0 && mouse_x >= key->x && mouse_x <= key->x+key->width && mouse_y >= key->y && mouse_y <= key->y+key->height && ev.mouse.button == 1){
+            key->state = 1;
+            printf("use key");
+            p1->item[Key_num]--;
+        }
+    }
+    if(state == P2_turn_L){
+        if(p2->item[Key_num]>0 && mouse_x >= (WIDTH-key->width) && mouse_x <= WIDTH && mouse_y >= key->y && mouse_y <= key->y+key->height && ev.mouse.button == 1)
+            key->state = 1;
+    }
+}
 void Key_interact(Elements *self, Elements *tar) {}
 void Key_draw(Elements *self)
 {
